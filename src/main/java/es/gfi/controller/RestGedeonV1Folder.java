@@ -102,7 +102,7 @@ public class RestGedeonV1Folder<T> {
 
 	// POST /gedeon/v1/{appName}/folders Créer un dossier
 	@PostMapping(path = "/gedeon/v1/{appName}/folders", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<T> getApplicationsFoldersPost(@PathVariable String appName,
+	public ResponseEntity<T> postApplicationsFoldersPost(@PathVariable String appName,
 			@RequestHeader("idFolder") String idFolder) {
 
 		logger.debug("getApplicationsFoldersPost Debut");
@@ -150,8 +150,8 @@ public class RestGedeonV1Folder<T> {
 
 	// GET /gedeon/v1/{appName}/folders/{folderId} Récupérer les métadonnées
 	// d'un dossier avec son identifian
-	@PostMapping(path = "/gedeon/v1/{appName}/folders/{idFolder}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<T> getApplicationsFoldersGet(@PathVariable String appName,
+	@GetMapping(path = "/gedeon/v1/{appName}/folders/{idFolder}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<T> getApplicationsFoldersId(@PathVariable String appName,
 			@PathVariable("idFolder") String idFolder) {
 
 		logger.debug("getApplicationsFoldersGet Debut");

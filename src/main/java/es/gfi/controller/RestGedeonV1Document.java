@@ -223,7 +223,7 @@ public class RestGedeonV1Document<T> {
 	// PATCH /gedeon/v1/{appName}/documents/{documentId} Mettre à jour
 	// (partiellement) un document
 	@PatchMapping(path = "/gedeon/v1/{appName}/documents/{documentId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<T> getApplicationsDocumentbyId2(@PathVariable String appName, @PathVariable String documentId
+	public ResponseEntity<T> patchApplicationsDocumentbyId(@PathVariable String appName, @PathVariable String documentId
 		   , @RequestHeader("documento") String documento, @RequestHeader("versioning") String versioning
 		   , @RequestPart("file") MultipartFile theFile
 		   ){
