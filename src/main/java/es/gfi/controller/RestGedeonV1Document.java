@@ -1,11 +1,17 @@
 package es.gfi.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +35,8 @@ import es.gfi.model.gedeon.v1.exception.GedeonV1ReponseException;
 public class RestGedeonV1Document<T> {
 
 	private final Logger logger = LoggerFactory.getLogger(RestGedeonV1Document.class);
+	
+	private static String UPLOADED_FOLDER = "C:\\temporal2\\";
 
 	private static String[] lAppList = { "ARP", "GINCO", "AGREGE", "OSCAR" };
 	private static String[] lUserList = { "usuario", "emilio", "cristobal", "bartolo", "sidy", "david" };
@@ -290,7 +297,7 @@ public class RestGedeonV1Document<T> {
 	@GetMapping(path = "/gedeon/v1/{appName}/documents/{documentId}/content", produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<T> getApplicationsDocumentbyIdContent(@PathVariable String appName,
-			@PathVariable String documentId) {
+			@PathVariable String documentId) throws IOException {
 
 		logger.debug("getApplicationsDocumentbyIdContent Debut");
 		logger.debug("appName = " + appName);
@@ -318,6 +325,31 @@ public class RestGedeonV1Document<T> {
 
 			GedeonV1BodyStreamingResponseBody response = new GedeonV1BodyStreamingResponseBody();
 			response.setName("OK");
+			
+			byte[] reportBytes = null;
+		    File result=new File(UPLOADED_FOLDER + "sample1.pdf");
+
+		    if(result.exists()){
+		        InputStream inputStream = new FileInputStream(UPLOADED_FOLDER + "sample1.pdf"); 
+
+
+		        byte[]out = IOUtils.toByteArray(inputStream);
+
+		        HttpHeaders responseHeaders = new HttpHeaders();
+		        responseHeaders.add("content-disposition", "attachment; filename=" + "sample1.pdf");
+
+		        response.setOut(out);
+
+		    }else{
+
+		    	GedeonV1ReponseException gedeonV1ReponseException = new GedeonV1ReponseException();
+				gedeonV1ReponseException.setDetails("details Test 1");
+				gedeonV1ReponseException.setMessage("message Test 1");
+				gedeonV1ReponseException.setTimestamp(String.valueOf(new Timestamp()));
+				
+		    	return new ResponseEntity(gedeonV1ReponseException, HttpStatus.NOT_FOUND);
+		    }
+			
 
 			logger.debug("getApplicationsDocumentbyIdContent Fin");
 

@@ -8,6 +8,8 @@ public class GedeonV1BodyStreamingResponseBody implements Serializable {
 	private static final long serialVersionUID = -5555155400881012875L;
 	
 	private String name;
+	
+	private byte[]out;
 		
 	public String getName() {
 		return name;
@@ -16,5 +18,15 @@ public class GedeonV1BodyStreamingResponseBody implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public byte[] getOut() {
+		return out;
+	}
+
+	public void setOut(byte[] out) {
+		this.out = out;
+	}
+	
+	
 	
 }
